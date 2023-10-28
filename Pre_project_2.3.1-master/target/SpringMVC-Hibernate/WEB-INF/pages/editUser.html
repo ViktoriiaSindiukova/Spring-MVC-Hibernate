@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h2>Edit user</h2>
+<form th:method="POST" th:action="@{'/user/?id='+${user.getId()}}" th:object="${user}">
+    <label for="name">Edit name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <label for="age">Edit last name: </label>
+    <input type="text" th:field="*{lastName}" id="age"/>
+    <br/>
+    <label for="voice">Edit age: </label>
+    <input type="text" th:field="*{age}" id="voice"/>
+    <br/>
+    <input type="submit" value="Update"/>
+</form>
+</body>
+</html>

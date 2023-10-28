@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h2>Add new user</h2>
+<form th:method="POST" th:action="@{/}" th:object="${user}">
+    <label for="name">Enter name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <label for="age">Enter last name: </label>
+    <input type="text" th:field="*{lastName}" id="age"/>
+    <br/>
+    <label for="voice">Enter age: </label>
+    <input type="text" th:field="*{age}" id="voice"/>
+    <br/>
+    <input type="submit" value="Save"/>
+</form>
+</body>
+</html>
