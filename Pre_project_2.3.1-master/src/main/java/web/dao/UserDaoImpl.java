@@ -2,10 +2,13 @@ package web.dao;
 
 import org.springframework.stereotype.Repository;
 import web.model.User;
+import web.utill.UserNotFoundException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -20,37 +23,31 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void removeUserById(int id) {
-        try {
-            em.remove(em.find(User.class, id));
-        } catch (NoSuchElementException ex) {
-            throw new NoSuchElementException();
-        }
+        Optional<User> user = Optional.ofNullable(Optional.ofNullable(em.find(User.class, id))
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found.")));
+        em.remove(user.get());
     }
 
     @Override
     public List<User> getAllUsers() {
-        List<User> userList = em.createQuery("from User", User.class).getResultList();
-        return userList;
+        return em.createQuery("from User", User.class).getResultList();
     }
 
     @Override
     public void updateUser(User editedUser, int id) {
-        try {
-            User persistedUser = em.find(User.class, id);
-            persistedUser.setName(editedUser.getName());
-            persistedUser.setLastName(editedUser.getLastName());
-            persistedUser.setAge(editedUser.getAge());
-        } catch (NoSuchElementException ex) {
-            throw new NoSuchElementException();
-        }
+        Optional<User> persistedUser = Optional.ofNullable(Optional.ofNullable(em.find(User.class, id))
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found.")));
+        User user = persistedUser.get();
+        user.setName(editedUser.getName());
+        user.setLastName(editedUser.getLastName());
+        user.setAge(editedUser.getAge());
     }
 
     @Override
     public User getUserById(int id) {
-        try {
-            return em.find(User.class, id);
-        } catch (NoSuchElementException ex) {
-            throw new NoSuchElementException();
-        }
+        Optional<User> user = Optional.ofNullable(Optional.ofNullable(em.find(User.class, id))
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found.")));
+
+        return user.get();
     }
 }
